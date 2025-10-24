@@ -1,14 +1,18 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Allow CORS
-app.use(cors());
+// Allow all origins (for development; you can restrict in production)
+const corsOptions = {
+  origin: 'https://trendvibe-news.onrender.com', // your frontend URL
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // API route to fetch news
 app.get('/api/news', async (req, res) => {
@@ -30,14 +34,6 @@ app.get('/api/news', async (req, res) => {
     console.error(error.message);
     res.status(500).json({ status: 'error', message: 'Failed to fetch news' });
   }
-});
-
-// Serve React frontend
-app.use(express.static(path.join(__dirname, '../news-frontend/build')));
-
-// Wildcard route for React SPA
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../news-frontend/build', 'index.html'));
 });
 
 // Start server
