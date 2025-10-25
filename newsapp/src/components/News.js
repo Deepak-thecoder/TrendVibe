@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default class News extends Component {
-  // 🔹 Use environment variable OR fallback to hardcoded key
-  apiKey = process.env.REACT_APP_NEWS_API_KEY || "09a9efc2a56d4a35a636e21863aa0f58";
 
   static defaultProps = {
     country: 'us',
@@ -38,7 +36,7 @@ export default class News extends Component {
     this.setState({ loading: true });
 
     // 🔹 Direct NewsAPI URL (no backend)
-    const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}&apiKey=${this.apiKey}`;
+    const url = `https://newsapp-backend-a8de.onrender.com/api/news?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     
     console.log("Fetching from URL:", url);
 
