@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default class News extends Component {
-  apiKey = process.env.REACT_APP_API_KEY;
+  // 🔹 Use environment variable OR fallback to hardcoded key
+  apiKey = process.env.REACT_APP_NEWS_API_KEY || "09a9efc2a56d4a35a636e21863aa0f58";
 
   static defaultProps = {
     country: 'us',
@@ -35,16 +36,26 @@ export default class News extends Component {
   async fetchArticles() {
     this.props.setProgress(10);
     this.setState({ loading: true });
-    console.log("Fetching articles from API...");
-    // const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+
+    // 🔹 Direct NewsAPI URL (no backend)
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}&apiKey=${this.apiKey}`;
+    
+    console.log("Fetching from URL:", url);
+
     this.props.setProgress(30);
+
     try {
       const response = await fetch(url);
-      console.log("Response object:", response);
-      this.props.setProgress(70);
       const data = await response.json();
       console.log("Fetched data:", data);
+
+      if (data.status === "error") {
+        console.error("API Error:", data.message);
+        this.setState({ loading: false });
+        this.props.setProgress(100);
+        return;
+      }
+
       const newArticles = Array.isArray(data.articles) ? data.articles : [];
 
       this.setState({
@@ -60,7 +71,7 @@ export default class News extends Component {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.fetchArticles();
   }
 
