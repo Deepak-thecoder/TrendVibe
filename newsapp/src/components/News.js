@@ -38,7 +38,7 @@ export default class News extends Component {
     this.setState({ loading: true });
 
     // 🔹 Direct NewsAPI URL (no backend)
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}&apiKey=${this.apiKey}`;
+    const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}&apiKey=${this.apiKey}`;
     
     console.log("Fetching from URL:", url);
 
