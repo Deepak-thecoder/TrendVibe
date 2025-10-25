@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default class News extends Component {
+  apiKey = process.env.REACT_APP_API_KEY;
 
   static defaultProps = {
     country: 'us',
@@ -34,9 +35,9 @@ export default class News extends Component {
   async fetchArticles() {
     this.props.setProgress(10);
     this.setState({ loading: true });
+    console.log("Fetching articles from API...");
     // const url = `https://cors-anywhere.herokuapp.com/https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    const url = `${process.env.REACT_APP_API_URL}/api/news?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    console.log("Fetching from URL:", url);
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&pageSize=${this.props.pageSize}&apiKey=${this.apiKey}`;
     this.props.setProgress(30);
     try {
       const response = await fetch(url);
